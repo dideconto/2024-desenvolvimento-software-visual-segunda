@@ -1,0 +1,5 @@
+### Requisação para a raiz da apliação
+GET http://localhost:5085
+
+### Requisação para a segunda funcionalidade
+GET http://localhost:5085/segundafuncionalidade
