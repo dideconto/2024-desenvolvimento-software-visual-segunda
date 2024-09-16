@@ -4,6 +4,7 @@
 // - Postman
 // - Insomnia
 using API.Models;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
@@ -24,37 +25,31 @@ List<Produto> produtos = new List<Produto>
 
 //Endpoints - Funcionalidades
 //Requisição - URL e método/verbo HTTP
+//Resposta - Dados (json/xml) e código HTTP de status
 //GET: /
 app.MapGet("/", () => "API de Produtos");
 
 //GET: /api/produto/listar
 app.MapGet("/api/produto/listar", () =>
 {
-    return produtos;
+    if (produtos.Count > 0)
+    {
+        return Results.Ok(produtos);
+    }
+    return Results.NotFound();
 });
 
 //POST: /api/produto/cadastrar/param_nome
-app.MapPost("/api/produto/cadastrar/{nome}", (string nome) =>
+app.MapPost("/api/produto/cadastrar", ([FromBody] Produto produto) =>
 {
-    Produto produto = new Produto();
-    produto.Nome = nome;
     produtos.Add(produto);
-    return produtos;
+    return Results.Created("", produto);
 });
 
 
 app.Run();
 
-//Exercícios para próxima aula
-// - Criar um endpoint para receber informação pela URL
-// - Criar um endpoint para receber informação pelo corpo
-
-//Java
-// Produto produto = new Produto();
-// produto.setValor(10);
-// Console.WriteLine("Preco: " + produto.getValor());
-
-//C#
-// Produto produto = new Produto();
-// produto.Nome = "Notebook";
-// Console.WriteLine("Preco: " + produto.Nome);
+//Exercícios para aula de hoje
+// - Buscar um produto pelo nome
+// - Remover um produto
+// - Alterar um produto
