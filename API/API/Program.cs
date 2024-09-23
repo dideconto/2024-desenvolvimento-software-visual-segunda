@@ -39,11 +39,48 @@ app.MapGet("/api/produto/listar", () =>
     return Results.NotFound();
 });
 
+//GET: /api/produto/buscar/{id}
+app.MapGet("/api/produto/buscar/{id}", ([FromRoute] string id) =>
+{
+    Produto? produto = produtos.Find(x => x.Id == id);
+    if (produto == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(produto);
+});
+
 //POST: /api/produto/cadastrar/param_nome
 app.MapPost("/api/produto/cadastrar", ([FromBody] Produto produto) =>
 {
     produtos.Add(produto);
     return Results.Created("", produto);
+});
+
+//DELETE: /api/produto/deletar/{id}
+app.MapDelete("/api/produto/deletar/{id}", ([FromRoute] string id) =>
+{
+    Produto? produto = produtos.Find(x => x.Id == id);
+    if (produto == null)
+    {
+        return Results.NotFound();
+    }
+    produtos.Remove(produto);
+    return Results.Ok(produto);
+});
+
+//PUT: /api/produto/alterar/{id}
+app.MapPut("/api/produto/alterar/{id}", ([FromRoute] string id, [FromBody] Produto produtoAlterado) =>
+{
+    Produto? produto = produtos.Find(x => x.Id == id);
+    if (produto == null)
+    {
+        return Results.NotFound();
+    }
+    produto.Nome = produtoAlterado.Nome;
+    produto.Quantidade = produtoAlterado.Quantidade;
+    produto.Valor = produtoAlterado.Valor;
+    return Results.Ok(produto);
 });
 
 
