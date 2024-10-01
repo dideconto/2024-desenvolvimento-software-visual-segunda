@@ -5,7 +5,7 @@ GET http://localhost:5085
 GET http://localhost:5085/api/produto/listar
 
 ### Buscar produto
-GET http://localhost:5085/api/produto/buscar/fc05e072-842a-460a-9e44-1573b87fa95
+GET http://localhost:5085/api/produto/buscar/6e50b9cb-b88c-4f93-8a47-433ca16f94d0
 
 ### Cadastrar produto
 POST http://localhost:5085/api/produto/cadastrar
@@ -18,10 +18,10 @@ Content-Type: application/json
 }
 
 ### Deletar produto
-DELETE http://localhost:5085/api/produto/deletar/a33a2763-c526-43ce-a901-37fb7f2ef14b
+DELETE http://localhost:5085/api/produto/deletar/6e50b9cb-b88c-4f93-8a47-433ca16f94d0
 
 ### Alterar produto
-PUT http://localhost:5085/api/produto/alterar/ab73d311-35dc-42cc-a5d2-140279ff08ac
+PUT http://localhost:5085/api/produto/alterar/e36e3c7f-ed18-4a55-b044-a89c9b4b6934
 Content-Type: application/json
 
 {
