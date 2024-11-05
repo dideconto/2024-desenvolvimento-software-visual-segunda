@@ -2,7 +2,7 @@
 //1 - A primeira letra do componente DEVE ser maiúscula
 //2 - O componente DEVE ser uma função
 //3 - O componente DEVE retornar APENAS UM elemento HTML
-//4 - Exportar o componente 
+//4 - Exportar o componente
 
 function ComponenteExemplo() {
   return (

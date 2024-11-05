@@ -11,21 +11,16 @@ var builder = WebApplication.CreateBuilder(args);
 //Adicionando o serviço de banco de dados na aplicação
 builder.Services.AddDbContext<AppDataContext>();
 
-var app = builder.Build();
+builder.Services.AddCors(
+    options =>
+        options.AddPolicy("Acesso Total",
+            configs => configs
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod())
+);
 
-List<Produto> produtos = new List<Produto>
-{
-    new Produto { Nome = "Apple iPhone 14", Valor = 999.99, Quantidade = 10 },
-    new Produto { Nome = "Samsung Galaxy S23", Valor = 899.99, Quantidade = 5 },
-    new Produto { Nome = "Sony WH-1000XM5", Valor = 349.99, Quantidade = 20 },
-    new Produto { Nome = "Dell XPS 13", Valor = 1199.99, Quantidade = 8 },
-    new Produto { Nome = "Apple MacBook Pro", Valor = 2399.99, Quantidade = 15 },
-    new Produto { Nome = "Bose QuietComfort 35 II", Valor = 299.99, Quantidade = 12 },
-    new Produto { Nome = "Nintendo Switch", Valor = 299.99, Quantidade = 7 },
-    new Produto { Nome = "GoPro HERO10", Valor = 499.99, Quantidade = 25 },
-    new Produto { Nome = "Kindle Paperwhite", Valor = 139.99, Quantidade = 30 },
-    new Produto { Nome = "Sony PlayStation 5", Valor = 499.99, Quantidade = 18 }
-};
+var app = builder.Build();
 
 //Endpoints - Funcionalidades
 //Requisição - URL e método/verbo HTTP
@@ -97,10 +92,11 @@ app.MapPut("/api/produto/alterar/{id}", ([FromRoute] string id,
     produto.Nome = produtoAlterado.Nome;
     produto.Quantidade = produtoAlterado.Quantidade;
     produto.Valor = produtoAlterado.Valor;
-    ctx.Produtos.Update(produto)ç
+    ctx.Produtos.Update(produto);
     ctx.SaveChanges();
     return Results.Ok(produto);
 });
 
+app.UseCors("Acesso Total");
 
 app.Run();
