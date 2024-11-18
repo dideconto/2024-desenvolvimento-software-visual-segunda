@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Produto } from "../../../models/Produto";
+import axios from "axios";
 
 function ProdutoCadastrar() {
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [quantidade, setQuantidade] = useState("");
   const [preco, setPreco] = useState("");
+  const [categoriaId, setCategoriaId] = useState(0);
+  const [categorias, setCategorias] = useState<any[]>([]);
+
+  useEffect(() => {
+    axios
+      .get<any[]>("http://localhost:5085/api/categoria/listar")
+      .then((resposta) => {
+        setCategorias(resposta.data);
+      });
+  }, []);
 
   function enviarProduto(event: any) {
     event.preventDefault();
@@ -14,6 +25,7 @@ function ProdutoCadastrar() {
       descricao: descricao,
       quantidade: Number(quantidade),
       valor: Number(preco),
+      categoriaId: categoriaId,
     };
 
     //AXIOS - Biblioteca de requisições HTTP
@@ -81,6 +93,17 @@ function ProdutoCadastrar() {
             onChange={(event: any) => setPreco(event.target.value)}
           />
         </div>
+        <div className="form-group">
+          <label htmlFor="categoria">Categorias:</label>
+          <select onChange={(event: any) => setCategoriaId(event.target.value)}>
+            {categorias.map((categoria) => (
+              <option value={categoria.id} key={categoria.id}>
+                {categoria.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <button type="submit">Cadastrar Produto</button>
       </form>
     </div>

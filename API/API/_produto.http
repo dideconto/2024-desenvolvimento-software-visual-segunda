@@ -13,8 +13,10 @@ Content-Type: application/json
 
 {
     "nome" : "Água",
+    "descricao" : "Mineral",
     "valor" : 4.5,
-    "quantidade" : 153
+    "quantidade" : 153,
+    "categoriaId" : 3
 }
 
 ### Deletar produto

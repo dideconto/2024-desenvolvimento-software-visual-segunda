@@ -28,6 +28,29 @@ var app = builder.Build();
 //GET: /
 app.MapGet("/", () => "API de Produtos");
 
+//################## CATEGORIA
+
+//GET: /api/categoria/listar
+app.MapGet("/api/categoria/listar", ([FromServices] AppDataContext ctx) =>
+{
+    if (ctx.Categorias.Any())
+    {
+        return Results.Ok(ctx.Categorias.ToList());
+    }
+    return Results.NotFound();
+});
+
+//POST: /api/categoria/cadastrar
+app.MapPost("/api/categoria/cadastrar", ([FromBody] Categoria categoria,
+    [FromServices] AppDataContext ctx) =>
+{
+    ctx.Categorias.Add(categoria);
+    ctx.SaveChanges();
+    return Results.Created("", categoria);
+});
+
+//################## PRODUTO
+
 //GET: /api/produto/listar
 app.MapGet("/api/produto/listar", ([FromServices] AppDataContext ctx) =>
 {
@@ -61,6 +84,12 @@ app.MapGet("/api/produto/buscar/{id}", ([FromRoute] string id,
 app.MapPost("/api/produto/cadastrar", ([FromBody] Produto produto,
     [FromServices] AppDataContext ctx) =>
 {
+    Categoria? categoria = ctx.Categorias.Find(produto.CategoriaId);
+    if (categoria is null)
+    {
+        return Results.NotFound();
+    }
+    produto.Categoria = categoria;
     ctx.Produtos.Add(produto);
     ctx.SaveChanges();
     return Results.Created("", produto);
